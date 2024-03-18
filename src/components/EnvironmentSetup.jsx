@@ -3,7 +3,7 @@ import Grid from "./Grid";
 import Notification from "./Notification";
 import { useEnvConfigStore } from "../store/EnvConfigContext";
 
-const EnvironmentSetup = () => {
+const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
   const [isGridShown, setIsGridShown] = useState(false);
   const [dynamitesNotificationDisplayed, setDynamitesNotificationDisplay] =
     useState(true);
@@ -69,9 +69,9 @@ const EnvironmentSetup = () => {
       {/* GRID */}
       {isGridShown ? (
         <>
-          <div className="env-setup-grid">
-            <Grid envConfiguration={"dynamites"} />
-          </div>
+          {/* <div className="env-setup-grid"> */}
+          <Grid envConfiguration={"dynamites"} />
+          {/* </div> */}
 
           <button
             className="mx-auto mt-4 text-stone-300 border-2 border-stone-400 rounded-sm px-4 p-1 text-lg hover:bg-stone-400 hover:text-stone-900 duration-300"
@@ -82,6 +82,7 @@ const EnvironmentSetup = () => {
                 nextConfigStep("terminal")
               } else {
                 nextConfigStep("none")
+                onEnvironmentConfigured(true);
               }
             }}
           >

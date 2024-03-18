@@ -8,11 +8,13 @@ body {
   font-family: "Tilt Neon";
 }
 
-.control-input {
+/* GENERAL */
+.smooth-display {
+  animation: smoothDisplayAnimation 2s ease;
 }
 
-/* ENVIRONMENT SETUP */
-@keyframes showEnvSetupGridAnimation {
+/* GRID */
+@keyframes smoothDisplayAnimation {
   0% {
     opacity: 0;
   }
@@ -20,11 +22,12 @@ body {
     opacity: 1;
   }
 }
-.env-setup-grid {
+.grid {
+  @apply flex flex-col text-slate-300 items-center smooth-display;
   opacity: 1;
-  animation: showEnvSetupGridAnimation 2.5s ease;
 }
 
+/* ENVIRONMENT SETUP */
 @keyframes notificationAnimation {
   0% {
     transform: scale(0) translateY(50px) rotate(20deg);
@@ -75,4 +78,14 @@ body {
 .dynamite {
   animation: dynamiteAnimation 2s ease-in-out infinite;
   font-size: 22px;
+}
+
+/* SIMULATION */
+.simulation-input {
+  @apply bg-stone-800 w-[4.5em] px-2 p-1 rounded-sm outline-none focus:border-stone-500 border-2 duration-300 border-stone-700 text-stone-400;
+}
+
+.simulation-button {
+  @apply p-1 px-3 border-b-2
+  border-x-2 w-fit border-stone-600 rounded-b-md hover:text-stone-400 duration-300 hover:border-stone-500 text-stone-500;
 }

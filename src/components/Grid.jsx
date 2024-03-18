@@ -25,7 +25,7 @@ const Grid = () => {
   }, []);
 
   return (
-    <div className="flex flex-col text-slate-300 items-center">
+    <div className="grid">
       {/* ROWS CONTAINER */}
       <div className="flex flex-col gap-2">
         {cellsData.map((rowData, rowIndex) => {
