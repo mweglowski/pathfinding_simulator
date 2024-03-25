@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Grid from './Grid'
 import SimulationButton from './ui/SimulationButton'
 
 const Simulation = () => {
+  useEffect(() => {
+    // INITIALIZE Agent OBJECT 
+  }, [])
+
   return (
     <div className='flex flex-col text-stone-400 smooth-display'>
       <div className='mx-auto py-4 text-2xl'>Simulation</div>
