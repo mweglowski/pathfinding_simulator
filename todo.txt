@@ -1,2 +1,3 @@
-create Environment object
 create Agent object
+
+enable user to select qlearning, expected sarsa, sarsa

@@ -71,9 +71,7 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       {/* GRID */}
       {isGridShown ? (
         <>
-          {/* <div className="env-setup-grid"> */}
           <Grid />
-          {/* </div> */}
 
           <button
             className="mx-auto mt-4 text-stone-300 border-2 border-stone-400 rounded-sm px-4 p-1 text-lg hover:bg-stone-400 hover:text-stone-900 duration-300"
