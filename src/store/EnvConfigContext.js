@@ -5,9 +5,9 @@ const StoreContext = createContext();
 export const EnvConfigStoreProvider = ({ children }) => {
   const [state, setState] = useState({
     currentConfig: "none",
-    dynamitePositions: [], // [[0, 1], [5, 3]...]
-    startPosition: null, // {x: 0, y: 0}
-    terminalPosition: null, // {x: 0, y: 0}
+    dynamitePositions: [], // [{x: 0, y: 0}, ...]
+    startPosition: {x: null, y: null}, // {x: 0, y: 0}
+    terminalPosition: {x: null, y: null}, // {x: 0, y: 0}
   });
 
   const updateCurrentConfig = (newConfig) => {
@@ -61,6 +61,7 @@ export const EnvConfigStoreProvider = ({ children }) => {
     currentConfig: state.currentConfig,
     updateCurrentConfig,
     updateDynamitePosition,
+    dynamitePositions: state.dynamitePositions,
     updateStartPosition,
     startPosition: state.startPosition,
     updateTerminalPosition,

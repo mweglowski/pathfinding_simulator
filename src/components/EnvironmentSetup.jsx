@@ -42,10 +42,12 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       updateCurrentConfig("start");
       setIsGridShown(false);
       setStartNotificationDisplay(true);
-    } else {
+    } else if (configType === "terminal") {
       updateCurrentConfig("terminal");
       setIsGridShown(false);
       setTerminalNotificationDisplay(true);
+    } else {
+      updateCurrentConfig("none");
     }
   };
 
@@ -70,7 +72,7 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       {isGridShown ? (
         <>
           {/* <div className="env-setup-grid"> */}
-          <Grid envConfiguration={"dynamites"} />
+          <Grid />
           {/* </div> */}
 
           <button
