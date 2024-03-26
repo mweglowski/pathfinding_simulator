@@ -1,3 +1,5 @@
 create Agent object
 
-enable user to select qlearning, expected sarsa, sarsa
+enable user to select expected sarsa
+
+toggleValuesDisplay function

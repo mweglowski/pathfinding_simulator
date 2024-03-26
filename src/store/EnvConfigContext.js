@@ -11,7 +11,6 @@ export const EnvConfigStoreProvider = ({ children }) => {
   });
 
   const updateCurrentConfig = (newConfig) => {
-    console.log("config update", newConfig);
     setState((prevState) => ({
       ...prevState,
       currentConfig: newConfig,
@@ -31,18 +30,15 @@ export const EnvConfigStoreProvider = ({ children }) => {
         const updatedPositions = dynamitePositions.filter(
           (_, index) => index !== positionIndex
         );
-        console.log("dynamite removed", position);
         return { ...prevState, dynamitePositions: updatedPositions };
       }
       // ADD POSITION
       const updatedPositions = [...dynamitePositions, position];
-      console.log("dynamite added", position);
       return { ...prevState, dynamitePositions: updatedPositions };
     });
   };
 
   const updateStartPosition = (position) => {
-    console.log("new start position", position);
     setState((prevState) => ({
       ...prevState,
       startPosition: position,
@@ -50,7 +46,6 @@ export const EnvConfigStoreProvider = ({ children }) => {
   };
 
   const updateTerminalPosition = (position) => {
-    console.log("new terminal position", position);
     setState((prevState) => ({
       ...prevState,
       terminalPosition: position,
