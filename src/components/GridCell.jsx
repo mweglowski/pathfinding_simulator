@@ -1,20 +1,44 @@
 import { useState, useMemo, useEffect } from "react";
 import { useEnvConfigStore } from "../store/EnvConfigContext";
+import { max } from "../utils/max";
 
 const GridCell = ({ data }) => {
-  const { currentConfig, updateDynamitePosition, updateStartPosition, startPosition, updateTerminalPosition, terminalPosition, dynamitePositions } = useEnvConfigStore();
+  const {
+    currentConfig,
+    updateDynamitePosition,
+    updateStartPosition,
+    startPosition,
+    updateTerminalPosition,
+    terminalPosition,
+    dynamitePositions,
+    valuesDisplayed,
+    qValues,
+  } = useEnvConfigStore();
   const [cellContent, setCellContent] = useState("");
 
   const isDynamiteInCell = (cellCoords) => {
     for (let i = 0; i < dynamitePositions.length; i++) {
-      if (cellCoords.x === dynamitePositions[i].x && cellCoords.y === dynamitePositions[i].y) {
+      if (
+        cellCoords.x === dynamitePositions[i].x &&
+        cellCoords.y === dynamitePositions[i].y
+      ) {
         return true;
       }
     }
     return false;
-  }
+  };
 
   useEffect(() => {
+    if (valuesDisplayed && qValues.length !== 0) {
+      const value = max(qValues[data.y][data.x]).toFixed(1);
+
+      if (value !== "0.0") {
+        setCellContent(value);
+      }
+    } else {
+      setCellContent("");
+    }
+
     if (currentConfig !== "dynamite") {
       if (isDynamiteInCell(data)) {
         setCellContent("🧨");
@@ -26,9 +50,9 @@ const GridCell = ({ data }) => {
     }
     // CHECK IF CELL IS TERMINAL POSITION
     if (data.x === terminalPosition.x && data.y === terminalPosition.y) {
-      setCellContent("🏆")
+      setCellContent("🏆");
     }
-  }, [])
+  }, [valuesDisplayed, data]);
 
   const clickHandler = () => {
     if (currentConfig === "none") return;
@@ -39,7 +63,7 @@ const GridCell = ({ data }) => {
       } else {
         setCellContent("");
       }
-      updateDynamitePosition(data)
+      updateDynamitePosition(data);
     } else if (currentConfig === "start") {
       if (cellContent === "") {
         if (startPosition.x === null) {
@@ -50,7 +74,7 @@ const GridCell = ({ data }) => {
         return;
       } else {
         setCellContent("");
-        updateStartPosition({x: null, y: null})
+        updateStartPosition({ x: null, y: null });
       }
     } else if (currentConfig === "terminal") {
       if (cellContent === "") {
@@ -62,11 +86,10 @@ const GridCell = ({ data }) => {
         return;
       } else {
         setCellContent("");
-        updateTerminalPosition({x: null, y: null})
+        updateTerminalPosition({ x: null, y: null });
       }
     }
   };
-
 
   const cellStyle = useMemo(() => {
     if (isDynamiteInCell(data) || currentConfig === "dynamite") {
@@ -80,7 +103,7 @@ const GridCell = ({ data }) => {
     if (data.x === terminalPosition.x && data.y === terminalPosition.y) {
       return {
         fontSize: "28px",
-      }
+      };
     }
     return null;
   }, [currentConfig]);
@@ -90,9 +113,7 @@ const GridCell = ({ data }) => {
       className=" bg-stone-800 p-2 w-[4rem] h-[4rem] hover:bg-stone-700 duration-300 cursor-pointer rounded-sm flex items-center justify-center"
       onClick={clickHandler}
     >
-      <div style={cellStyle}>
-        {cellContent}
-      </div>
+      <div style={cellStyle}>{cellContent}</div>
     </div>
   );
 };

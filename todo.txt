@@ -1,5 +1,9 @@
-create Agent object
+animated agent going to the destination
 
-enable user to select expected sarsa
+train agent modal with training configuration [episodes, steps, discount, stepSize]
 
-toggleValuesDisplay function
+run agent modal with configuration [delay]
+
+show best path button
+
+reseting simulation button

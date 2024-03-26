@@ -6,13 +6,34 @@ import { PathfindingEnvironment } from "../agent/PathfindingEnvironment";
 import { useEnvConfigStore } from "../store/EnvConfigContext";
 
 const Simulation = () => {
-  const [areValuesDisplayed, setValuesDisplay] = useState(false);
-  const { dynamitePositions, startPosition, terminalPosition } =
-    useEnvConfigStore();
+  const {
+    dynamitePositions,
+    startPosition,
+    terminalPosition,
+    toggleValuesDisplay,
+    valuesDisplayed,
+    updateQValues,
+  } = useEnvConfigStore();
 
-  useEffect(() => {
-    // INITIALIZE AGENT & ENVIRONMENT
+  // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
+  const performTraining = () => {
+    const episodes = 1000;
+    const steps = 100;
+    console.log("TRAINING...");
+
     const agent = new QLearningAgent(0.1, 0.1, 1.0, 5, 8);
+    // const env = new PathfindingEnvironment(
+    //   8,
+    //   5,
+    //   { y: 0, x: 0 },
+    //   { y: 5, x: 5 },
+    //   [
+    //     { y: 3, x: 5 },
+    //     { y: 5, x: 1 },
+    //     { y: 3, x: 0 },
+    //     { y: 0, x: 2 },
+    //   ]
+    // );
     const env = new PathfindingEnvironment(
       8,
       5,
@@ -21,23 +42,38 @@ const Simulation = () => {
       dynamitePositions
     );
 
-    env.start();
-    console.log(env.agentLocation);
-    env.step(2);
-    console.log(env.agentLocation);
-    env.step(1);
-    console.log(env.agentLocation);
+    for (let episode = 0; episode < episodes; episode++) {
+      // OBSERVATION FROM ENVIRONMENT (STATE)
+      let observation = env.start();
+      // AGENT TAKES FIRST ACTION
+      let action = agent.start(observation);
+      // TOTAL REWARD IN THIS EPISODE
+      let totalReward = 0;
 
-    // agent.start({ y: 0, x: 0 });
-    // agent.step(-1, { y: 0, x: 1 });
-  }, []);
+      for (let step = 0; step < steps; step++) {
+        // REWARDS AND AGENT LOCATION AFTER TAKING STEP IN ENVIRONMENT
+        const { reward, terminal, agentLocation } = env.step(action);
 
-  const toggleValuesDisplay = () => {
-    setValuesDisplay((prevDisplay) => !prevDisplay);
-  };
+        // REWARD UPDATE
+        totalReward += reward;
 
-  const performTraining = () => {
-    console.log("TRAINING...");
+        // CHECK FOR TERMINAL STATE
+        if (terminal) {
+          // UPDATING Q-VALUES LAST TIME
+          agent.end(reward);
+          break;
+        }
+
+        // UPDATING Q-VALUES
+        action = agent.step(reward, agentLocation);
+      }
+
+      // CURRENT EPISODE DETAILS
+      console.log(`Episode ${episode + 1}: Total Reward: ${totalReward}`);
+    }
+
+    // UPDATE STORE
+    updateQValues(agent.qValues);
   };
 
   return (
@@ -81,7 +117,7 @@ const Simulation = () => {
           </button>
         </div>
 
-        <Grid simulation={true} valuesDisplayed={areValuesDisplayed} />
+        <Grid />
 
         <div className="flex justify-between">
           <SimulationButton onButtonClick={() => {}}>
@@ -91,7 +127,7 @@ const Simulation = () => {
             Train agent
           </SimulationButton>
           <SimulationButton onButtonClick={toggleValuesDisplay}>
-            Show values
+            {valuesDisplayed ? "Hide" : "Show"} values
           </SimulationButton>
         </div>
       </div>

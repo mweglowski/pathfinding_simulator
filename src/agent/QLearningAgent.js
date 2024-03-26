@@ -1,3 +1,5 @@
+import { max } from "../utils/max";
+
 export class QLearningAgent {
   constructor(epsilon, stepSize, discount, gridWidth, gridHeight) {
     this.numActions = 4;
@@ -7,34 +9,32 @@ export class QLearningAgent {
     // ACTION-VALUES ESTIMATES SHAPE (numStates, numActions)
     this.q = [];
     for (let stateRowIndex = 0; stateRowIndex < gridHeight; stateRowIndex++) {
-      let row = []
+      let row = [];
       for (let stateColIndex = 0; stateColIndex < gridWidth; stateColIndex++) {
-        let qValues = []
-        for (let actionIndex = 0; actionIndex < this.numActions; actionIndex++) {
+        let qValues = [];
+        for (
+          let actionIndex = 0;
+          actionIndex < this.numActions;
+          actionIndex++
+        ) {
           qValues.push(0);
         }
         row.push(qValues);
       }
-      
+
       this.q.push(row);
     }
   }
 
-  max(values) {
-    let maxValue = values[0];
-    for (let i = 1; i < values.length; i++) {
-      if (values[i] > maxValue) {
-        maxValue = values[i];
-      }
-    }
-    return maxValue;
+  get qValues() {
+    return this.q;
   }
 
   argmax(values) {
     // RETURNS INDEX OF MAX VALUE
     // IF THERE ARE MULTIPLE SAME MAX VALUES, THEN IT CHOOSES ACTION INDEX RANDOMLY
     let maxValue = values[0];
-    let maxValueIndexes = [];
+    let maxValueIndexes = [0];
     for (let i = 1; i < values.length; i++) {
       if (values[i] > maxValue) {
         maxValue = values[i];
@@ -44,11 +44,13 @@ export class QLearningAgent {
         maxValueIndexes.push(i);
       }
     }
-    return maxValueIndexes[Math.round(Math.random() * (maxValueIndexes.length - 1))];
+    return maxValueIndexes[
+      Math.round(Math.random() * (maxValueIndexes.length - 1))
+    ];
   }
 
   start(observation) {
-    const {y, x} = observation;
+    const { y, x } = observation;
     const currentQValues = this.q[y][x];
 
     let action;
@@ -62,15 +64,15 @@ export class QLearningAgent {
 
     this.previousState = observation;
     this.previousAction = action;
-    
+
     return action;
   }
 
   step(reward, observation) {
-    const {y, x} = observation;
+    const { y, x } = observation;
     const currentQValues = this.q[y][x];
 
-    let action;
+    let action = -1;
     if (Math.random() < this.epsilon) {
       // INDEX OF RANDOM ACTION
       action = Math.round(Math.random() * (this.numActions - 1));
@@ -82,11 +84,13 @@ export class QLearningAgent {
     const prevStateY = this.previousState.y;
     const prevStateX = this.previousState.x;
     const prevAction = this.previousAction;
-    const prevActionValue = this.q[prevStateY][prevStateX][prevAction]
+    const prevActionValue = this.q[prevStateY][prevStateX][prevAction];
 
     // UPDATE
-    const error = reward + this.discount * this.max(currentQValues) - prevActionValue
-    this.q[prevStateY][prevStateX][prevAction] = prevActionValue + this.stepSize * error
+    const error =
+      reward + this.discount * max(currentQValues) - prevActionValue;
+    this.q[prevStateY][prevStateX][prevAction] =
+      prevActionValue + this.stepSize * error;
 
     this.previousState = observation;
     this.previousAction = action;
@@ -98,10 +102,11 @@ export class QLearningAgent {
     const prevStateY = this.previousState.y;
     const prevStateX = this.previousState.x;
     const prevAction = this.previousAction;
-    const prevActionValue = this.q[prevStateY][prevStateX][prevAction]
+    const prevActionValue = this.q[prevStateY][prevStateX][prevAction];
 
     // LAST UPDATE IN THE EPISODE
-    const error = reward - prevActionValue
-    this.q[prevStateY][prevStateX][prevAction] = prevActionValue + this.stepSize * error
+    const error = reward - prevActionValue;
+    this.q[prevStateY][prevStateX][prevAction] =
+      prevActionValue + this.stepSize * error;
   }
 }

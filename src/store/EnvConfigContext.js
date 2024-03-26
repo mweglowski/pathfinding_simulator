@@ -6,8 +6,10 @@ export const EnvConfigStoreProvider = ({ children }) => {
   const [state, setState] = useState({
     currentConfig: "none",
     dynamitePositions: [], // [{x: 0, y: 0}, ...]
-    startPosition: {x: null, y: null}, // {x: 0, y: 0}
-    terminalPosition: {x: null, y: null}, // {x: 0, y: 0}
+    startPosition: { x: null, y: null }, // {x: 0, y: 0}
+    terminalPosition: { x: null, y: null }, // {x: 0, y: 0},
+    valuesDisplayed: false,
+    qValues: [],
   });
 
   const updateCurrentConfig = (newConfig) => {
@@ -52,15 +54,38 @@ export const EnvConfigStoreProvider = ({ children }) => {
     }));
   };
 
+  const toggleValuesDisplay = () => {
+    setState((prevState) => ({
+      ...prevState,
+      valuesDisplayed: !prevState.valuesDisplayed,
+    }));
+  };
+
+  const updateQValues = (newQValues) => {
+    setState((prevState) => ({
+      ...prevState,
+      qValues: newQValues,
+    }));
+  };
+
   const value = {
-    currentConfig: state.currentConfig,
     updateCurrentConfig,
+    currentConfig: state.currentConfig,
+
     updateDynamitePosition,
     dynamitePositions: state.dynamitePositions,
+
     updateStartPosition,
     startPosition: state.startPosition,
+
     updateTerminalPosition,
     terminalPosition: state.terminalPosition,
+
+    toggleValuesDisplay,
+    valuesDisplayed: state.valuesDisplayed,
+
+    updateQValues,
+    qValues: state.qValues,
   };
 
   return (
