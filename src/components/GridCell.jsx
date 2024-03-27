@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useEnvConfigStore } from "../store/EnvConfigContext";
+import { useSimulationStore } from "../store/SimulationContext";
 import { max } from "../utils/max";
 
 const GridCell = ({ data }) => {
@@ -13,7 +13,7 @@ const GridCell = ({ data }) => {
     dynamitePositions,
     valuesDisplayed,
     qValues,
-  } = useEnvConfigStore();
+  } = useSimulationStore();
   const [cellContent, setCellContent] = useState("");
 
   const isDynamiteInCell = (cellCoords) => {

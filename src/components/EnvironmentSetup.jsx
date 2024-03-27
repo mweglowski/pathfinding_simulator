@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
 import Notification from "./Notification";
-import { useEnvConfigStore } from "../store/EnvConfigContext";
+import { useSimulationStore } from "../store/SimulationContext";
 
 const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
   const [isGridShown, setIsGridShown] = useState(false);
@@ -9,7 +9,7 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
     useState(true);
   const [startNotificationDisplayed, setStartNotificationDisplay] = useState(false);
   const [terminalNotificationDisplayed, setTerminalNotificationDisplay] = useState(false);
-  const { updateCurrentConfig, currentConfig } = useEnvConfigStore();
+  const { updateCurrentConfig, currentConfig } = useSimulationStore();
 
   // RUNS ONCE
   useEffect(() => {

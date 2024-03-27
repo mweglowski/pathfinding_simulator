@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 const StoreContext = createContext();
 
-export const EnvConfigStoreProvider = ({ children }) => {
+export const SimulationStoreProvider = ({ children }) => {
   const [state, setState] = useState({
     currentConfig: "none",
     dynamitePositions: [], // [{x: 0, y: 0}, ...]
@@ -94,4 +94,4 @@ export const EnvConfigStoreProvider = ({ children }) => {
 };
 
 // CUSTOM HOOK
-export const useEnvConfigStore = () => useContext(StoreContext);
+export const useSimulationStore = () => useContext(StoreContext);

@@ -3,9 +3,11 @@ import Grid from "./Grid";
 import SimulationButton from "./ui/SimulationButton";
 import { QLearningAgent } from "../agent/QLearningAgent";
 import { PathfindingEnvironment } from "../agent/PathfindingEnvironment";
-import { useEnvConfigStore } from "../store/EnvConfigContext";
+import { getBestPathMoves } from "../utils/getBestPathMoves";
+import { useSimulationStore } from "../store/SimulationContext";
 
 const Simulation = () => {
+  // SIMULATION DATA
   const {
     dynamitePositions,
     startPosition,
@@ -13,15 +15,22 @@ const Simulation = () => {
     toggleValuesDisplay,
     valuesDisplayed,
     updateQValues,
-  } = useEnvConfigStore();
+    qValues,
+  } = useSimulationStore();
+
+  // ANIMATED AGENT POSITION
+  const [animatedAgentPosition, setAnimatedAgentPosition] =
+    useState(startPosition);
 
   // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
   const performTraining = () => {
     const episodes = 1000;
     const steps = 100;
+    const gridHeight = 8;
+    const gridWidth = 5;
     console.log("TRAINING...");
 
-    const agent = new QLearningAgent(0.1, 0.1, 1.0, 5, 8);
+    const agent = new QLearningAgent(0.1, 0.1, 1.0, gridHeight, gridWidth);
     // const env = new PathfindingEnvironment(
     //   8,
     //   5,
@@ -35,8 +44,8 @@ const Simulation = () => {
     //   ]
     // );
     const env = new PathfindingEnvironment(
-      8,
-      5,
+      gridHeight,
+      gridWidth,
       startPosition,
       terminalPosition,
       dynamitePositions
@@ -74,6 +83,32 @@ const Simulation = () => {
 
     // UPDATE STORE
     updateQValues(agent.qValues);
+  };
+
+  const releaseAgent = () => {
+    console.log("releasing!");
+    const gridHeight = 8;
+    const gridWidth = 5;
+
+    const bestPathMoves = getBestPathMoves(
+      startPosition,
+      terminalPosition,
+      qValues,
+      gridHeight,
+      gridWidth
+    );
+    console.log(bestPathMoves)
+
+    let bestActionIndex = 0;
+    const intervalId = setInterval(() => {
+      let nextPosition = bestPathMoves[bestActionIndex];
+      console.log(nextPosition)
+
+      bestActionIndex += 1;
+      if (bestActionIndex === bestPathMoves.length) {
+        clearInterval(intervalId);
+      }
+    }, 1000);
   };
 
   return (
@@ -120,7 +155,7 @@ const Simulation = () => {
         <Grid />
 
         <div className="flex justify-between">
-          <SimulationButton onButtonClick={() => {}}>
+          <SimulationButton onButtonClick={releaseAgent}>
             Run agent
           </SimulationButton>
           <SimulationButton onButtonClick={performTraining}>

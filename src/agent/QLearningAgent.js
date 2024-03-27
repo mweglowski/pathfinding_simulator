@@ -1,7 +1,7 @@
 import { max } from "../utils/max";
 
 export class QLearningAgent {
-  constructor(epsilon, stepSize, discount, gridWidth, gridHeight) {
+  constructor(epsilon, stepSize, discount, gridHeight, gridWidth) {
     this.numActions = 4;
     this.epsilon = epsilon;
     this.stepSize = stepSize;
