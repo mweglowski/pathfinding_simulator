@@ -10,6 +10,7 @@ export const SimulationStoreProvider = ({ children }) => {
     terminalPosition: { x: null, y: null }, // {x: 0, y: 0},
     valuesDisplayed: false,
     qValues: [],
+    simulationAgentPosition: { x: null, y: null },
   });
 
   const updateCurrentConfig = (newConfig) => {
@@ -68,6 +69,13 @@ export const SimulationStoreProvider = ({ children }) => {
     }));
   };
 
+  const updateSimulationAgentPosition = (newPosition) => {
+    setState((prevState) => ({
+      ...prevState,
+      simulationAgentPosition: newPosition,
+    }));
+  };
+
   const value = {
     updateCurrentConfig,
     currentConfig: state.currentConfig,
@@ -86,6 +94,9 @@ export const SimulationStoreProvider = ({ children }) => {
 
     updateQValues,
     qValues: state.qValues,
+
+    updateSimulationAgentPosition,
+    simulationAgentPosition: state.simulationAgentPosition,
   };
 
   return (

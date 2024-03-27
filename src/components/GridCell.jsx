@@ -13,8 +13,14 @@ const GridCell = ({ data }) => {
     dynamitePositions,
     valuesDisplayed,
     qValues,
+    simulationAgentPosition,
   } = useSimulationStore();
   const [cellContent, setCellContent] = useState("");
+
+  // CHECK IF CELL CONTAINS ANIMATED AGENT IN SIMULATION
+  const isAgentInCell =
+    simulationAgentPosition.x === data.x &&
+    simulationAgentPosition.y === data.y;
 
   const isDynamiteInCell = (cellCoords) => {
     for (let i = 0; i < dynamitePositions.length; i++) {
@@ -29,6 +35,10 @@ const GridCell = ({ data }) => {
   };
 
   useEffect(() => {
+    if (isAgentInCell) {
+      setCellContent("🤖");
+      return;
+    }
     if (valuesDisplayed && qValues.length !== 0) {
       const value = max(qValues[data.y][data.x]).toFixed(1);
 
@@ -52,7 +62,7 @@ const GridCell = ({ data }) => {
     if (data.x === terminalPosition.x && data.y === terminalPosition.y) {
       setCellContent("🏆");
     }
-  }, [valuesDisplayed, data]);
+  }, [valuesDisplayed, data, simulationAgentPosition]);
 
   const clickHandler = () => {
     if (currentConfig === "none") return;
@@ -92,11 +102,22 @@ const GridCell = ({ data }) => {
   };
 
   const cellStyle = useMemo(() => {
+    if (isAgentInCell) {
+      return {
+        animation: "agentStepAnimation 1s ease-in-out",
+        fontSize: "22px",
+        boxShadow: "0 0 1.5em cyan",
+        borderRadius: 5,
+        backgroundColor: '#1f5e5c',
+      };
+    }
+
     if (isDynamiteInCell(data) || currentConfig === "dynamite") {
       return {
-        animation: "dynamiteAnimation 2s ease-in-out infinite",
+        animation: "dynamiteAnimation 3s ease-in-out infinite",
         animationDelay: `${Math.round(Math.random() * 1000)}ms`,
         fontSize: "22px",
+        opacity: 0,
       };
     }
     // ADJUST TERMINAL STATE EMOJI
@@ -106,7 +127,7 @@ const GridCell = ({ data }) => {
       };
     }
     return null;
-  }, [currentConfig]);
+  }, [currentConfig, isAgentInCell]);
 
   return (
     <div

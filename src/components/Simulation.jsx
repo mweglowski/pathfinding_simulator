@@ -16,11 +16,9 @@ const Simulation = () => {
     valuesDisplayed,
     updateQValues,
     qValues,
+    updateSimulationAgentPosition,
+    simulationAgentPosition,
   } = useSimulationStore();
-
-  // ANIMATED AGENT POSITION
-  const [animatedAgentPosition, setAnimatedAgentPosition] =
-    useState(startPosition);
 
   // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
   const performTraining = () => {
@@ -85,10 +83,14 @@ const Simulation = () => {
     updateQValues(agent.qValues);
   };
 
+  // AFTER RUNNING AGENT
   const releaseAgent = () => {
     console.log("releasing!");
     const gridHeight = 8;
     const gridWidth = 5;
+
+    // UPDATING ANIMATED SIMULATION AGENT POSITION TO START POSITION
+    updateSimulationAgentPosition(startPosition);
 
     const bestPathMoves = getBestPathMoves(
       startPosition,
@@ -97,15 +99,28 @@ const Simulation = () => {
       gridHeight,
       gridWidth
     );
-    console.log(bestPathMoves)
 
     let bestActionIndex = 0;
-    const intervalId = setInterval(() => {
-      let nextPosition = bestPathMoves[bestActionIndex];
-      console.log(nextPosition)
+    let currentAgentPosition = { ...startPosition };
 
-      bestActionIndex += 1;
-      if (bestActionIndex === bestPathMoves.length) {
+    const intervalId = setInterval(() => {
+      if (bestActionIndex < bestPathMoves.length) {
+        // RETURNS UPDATE VALUES LIKE {y: 1, x: 0}
+        // y: 1, SO THAT WE NEED TO INCREASE y BY 1
+        const update = bestPathMoves[bestActionIndex];
+
+        let nextPosition = {
+          y: currentAgentPosition.y + update.y,
+          x: currentAgentPosition.x + update.x,
+        };
+
+        currentAgentPosition = nextPosition;
+
+        // UPDATING ANIMATED AGENT IN SIMULATION
+        updateSimulationAgentPosition(nextPosition);
+
+        bestActionIndex += 1;
+      } else {
         clearInterval(intervalId);
       }
     }, 1000);

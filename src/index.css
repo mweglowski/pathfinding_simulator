@@ -57,28 +57,32 @@ body {
 
 @keyframes dynamiteAnimation {
   0% {
+    opacity: 0;
     transform: rotate(-45deg) translateY(0);
   }
   20% {
+    /* opacity: 0.7; */
     transform: rotate(-90deg);
   }
   40% {
     transform: rotate(0deg) scale(1.5);
   }
   60% {
+    opacity: 1;
     transform: rotate(-90deg) scale(1.5);
   }
   80% {
     transform: rotate(0deg) scale(1.5);
   }
   100% {
+    opacity: 0;
     transform: rotate(-45deg) translateY(0) scale(1);
   }
 }
-.dynamite {
+/* .dynamite {
   animation: dynamiteAnimation 2s ease-in-out infinite;
   font-size: 22px;
-}
+} */
 
 /* SIMULATION */
 .simulation-input {
@@ -88,4 +92,19 @@ body {
 .simulation-button {
   @apply p-1 px-3 border-b-2
   border-x-2 w-fit border-stone-600 rounded-b-md hover:text-stone-400 duration-300 hover:border-stone-500 text-stone-500;
+}
+
+@keyframes agentStepAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-40%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
 }
