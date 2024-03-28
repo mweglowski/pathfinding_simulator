@@ -6,6 +6,7 @@
 
 body {
   font-family: "Tilt Neon";
+  @apply bg-stone-900;
 }
 
 /* GENERAL */
@@ -48,7 +49,7 @@ body {
 }
 .env-setup-notification {
   @apply text-center top-[30%] bg-transparent absolute w-full z-50 text-slate-300 text-xl;
-  animation: notificationAnimation 4.05s ease;
+  animation: notificationAnimation 4s ease;
 }
 .env-setup-notification-text {
   @apply shadow-lg mx-auto w-fit shadow-gray-800 rounded-sm p-3 px-4;

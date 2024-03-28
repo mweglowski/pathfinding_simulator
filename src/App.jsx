@@ -8,9 +8,8 @@ const App = () => {
 
   return (
     <SimulationStoreProvider>
-      <div className="bg-stone-900 h-[100vh] flex flex-col">
+      <div className="flex flex-col">
         {/* SETTING UP ENVIRONMENT */}
-        {/* <Simulation /> */}
         {!isEnvironmentConfigured ? <EnvironmentSetup onEnvironmentConfigured={setIsEnvironmentConfigured} /> : <Simulation />}
       </div>
     </SimulationStoreProvider>

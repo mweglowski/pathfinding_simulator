@@ -35,7 +35,7 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       clearTimeout(gridTimeout);
       clearTimeout(notificationTimeout);
     };
-  }, [updateCurrentConfig]);
+  }, [updateCurrentConfig, setStartNotificationDisplay, setTerminalNotificationDisplay, setDynamitesNotificationDisplay]);
 
   const nextConfigStep = (configType) => {
     if (configType === "start") {

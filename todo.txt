@@ -1,5 +1,3 @@
-animated agent going to the destination
-
 train agent modal with training configuration [episodes, steps, discount, stepSize]
 
 run agent modal with configuration [delay]
