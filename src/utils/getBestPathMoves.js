@@ -3,7 +3,6 @@ import { max } from "../utils/max";
 
 // CHECK Q-VALUES IN ALL 4 DIRECTIONS AND GET BEST
 export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
-  console.log(startPosition, terminalPosition, qValues);
   let bestMoves = [];
   let agentPosition = startPosition;
 
@@ -15,7 +14,6 @@ export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
     }
     transformedValues.push(transformedRow);
   }
-  console.log(transformedValues);
 
   const isTerminalPosition = (y, x) => {
     return x === terminalPosition.x && y === terminalPosition.y;

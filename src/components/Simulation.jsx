@@ -39,14 +39,9 @@ const Simulation = () => {
 
   // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
   const performTraining = () => {
-    console.log("updating modal display");
     toggleModalDisplay();
-    // console.log(epsilon, stepSize, discount, episodes, steps)
-    // const episodes = 1000;
-    // const steps = 100;
     const gridHeight = 8;
     const gridWidth = 5;
-    console.log("TRAINING...");
 
     const agent = new QLearningAgent(
       epsilon,
@@ -96,9 +91,6 @@ const Simulation = () => {
         // UPDATING Q-VALUES
         action = agent.step(reward, agentLocation);
       }
-
-      // CURRENT EPISODE DETAILS
-      // console.log(`Episode ${episode + 1}: Total Reward: ${totalReward}`);
     }
 
     // UPDATE STORE
@@ -107,9 +99,6 @@ const Simulation = () => {
 
   // AFTER RUNNING AGENT
   const releaseAgent = () => {
-    console.log("releasing!");
-    console.log(qValues);
-
     // UPDATING ANIMATED SIMULATION AGENT POSITION TO START POSITION
     updateSimulationAgentPosition(startPosition);
 
