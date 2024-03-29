@@ -109,3 +109,26 @@ body {
     transform: translateY(10%);
   }
 }
+
+
+/* TRAINING ANIMATION */
+@keyframes letterAnimation {
+  0% {
+    /* transform: translateY(0); */
+  }
+  50% {
+    transform: translateY(10px);
+    letter-spacing: 10px;
+  }
+  100% {
+    /* transform: translateY(-10px); */
+  }
+}
+
+.letter-animation {
+  display: inline-block;
+  animation: letterAnimation 1s ease-in-out infinite;
+  text-shadow: 0 0 4px #8c837c, 0 0 5px #ab7950, 0 0 5px #4a4336,
+    0 0 5px #56504a;
+  opacity: 1;
+}

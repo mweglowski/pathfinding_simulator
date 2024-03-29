@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import Grid from "./Grid";
 import SimulationButton from "./ui/SimulationButton";
 import { QLearningAgent } from "../agent/QLearningAgent";
@@ -6,9 +6,12 @@ import { PathfindingEnvironment } from "../agent/PathfindingEnvironment";
 import { getBestPathMoves } from "../utils/getBestPathMoves";
 import { useSimulationStore } from "../store/SimulationContext";
 import Modal from "./ui/Modal";
+import TrainingAnimation from "./TrainingAnimation";
 
 const Simulation = () => {
   const [isModalDisplayed, updateModalDisplay] = useState(false);
+  const [isTrainingAnimationDisplayed, updateTrainingAnimationDisplay] =
+    useState(false);
   const [episodes, setEpisodes] = useState(100);
   const [steps, setSteps] = useState(1000);
   const [stepSize, setStepSize] = useState(0.1);
@@ -43,6 +46,12 @@ const Simulation = () => {
   const performTraining = () => {
     // FIRSTLY RESET SIMULATION DATA
     resetSimulation();
+    updateTrainingAnimationDisplay(true);
+    console.log("displayed");
+    setTimeout(() => {
+      updateTrainingAnimationDisplay(false);
+      console.log("hidden");
+    }, 5000);
 
     toggleModalDisplay();
     const gridHeight = 8;
@@ -170,7 +179,14 @@ const Simulation = () => {
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* TRAINING ANIMATION MODAL */}
+      {isTrainingAnimationDisplayed ? (
+        <Modal>
+          <TrainingAnimation />
+        </Modal>
+      ) : null}
+
+      {/* TRAINING MODAL */}
       {isModalDisplayed ? (
         <Modal toggleDisplay={toggleModalDisplay}>
           <div className="max-w-[500px] mx-auto w-full">

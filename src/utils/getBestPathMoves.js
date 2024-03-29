@@ -17,7 +17,7 @@ export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
 
   const isTerminalPosition = (y, x) => {
     return x === terminalPosition.x && y === terminalPosition.y;
-  }
+  };
 
   // FOR NOW HARDCODING STEPS (ASSUMING THAT BEST PATH AFTER TRAINING IS LESS THAN 100)
   const steps = 40;
@@ -28,19 +28,23 @@ export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
     if (agentX === terminalPosition.x && agentY === terminalPosition.y) break;
 
     let topValue =
-      agentY !== 0 && transformedValues[agentY - 1][agentX] !== 0 || isTerminalPosition(agentY - 1, agentX)
+      (agentY !== 0 && transformedValues[agentY - 1][agentX] !== 0) ||
+      isTerminalPosition(agentY - 1, agentX)
         ? transformedValues[agentY - 1][agentX]
         : -200;
     let rightValue =
-      agentX !== 4 && transformedValues[agentY][agentX + 1] !== 0 || isTerminalPosition(agentY, agentX + 1)
+      (agentX !== 4 && transformedValues[agentY][agentX + 1] !== 0) ||
+      isTerminalPosition(agentY, agentX + 1)
         ? transformedValues[agentY][agentX + 1]
         : -200;
     let bottomValue =
-      agentY !== 7 && transformedValues[agentY + 1][agentX] !== 0 || isTerminalPosition(agentY + 1, agentX)
+      (agentY !== 7 && transformedValues[agentY + 1][agentX] !== 0) ||
+      isTerminalPosition(agentY + 1, agentX)
         ? transformedValues[agentY + 1][agentX]
         : -200;
     let leftValue =
-      agentX !== 0 && transformedValues[agentY][agentX - 1] !== 0 || isTerminalPosition(agentY, agentX - 1)
+      (agentX !== 0 && transformedValues[agentY][agentX - 1] !== 0) ||
+      isTerminalPosition(agentY, agentX - 1)
         ? transformedValues[agentY][agentX - 1]
         : -200;
 
