@@ -25,11 +25,13 @@ const Simulation = () => {
     updateQValues,
     qValues,
     updateSimulationAgentPosition,
-    simulationAgentPosition,
   } = useSimulationStore();
 
   const resetSimulation = () => {
+    updateQValues([]);
+
     updateSimulationAgentPosition({ y: null, x: null });
+
     if (valuesDisplayed) toggleValuesDisplay();
   };
 
@@ -39,6 +41,9 @@ const Simulation = () => {
 
   // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
   const performTraining = () => {
+    // FIRSTLY RESET SIMULATION DATA
+    resetSimulation();
+
     toggleModalDisplay();
     const gridHeight = 8;
     const gridWidth = 5;
@@ -50,13 +55,6 @@ const Simulation = () => {
       gridHeight,
       gridWidth
     );
-    // const agent = new QLearningAgent(
-    //   0.1,
-    //   0.1,
-    //   1.0,
-    //   gridHeight,
-    //   gridWidth
-    // );
 
     const env = new PathfindingEnvironment(
       gridHeight,
@@ -99,6 +97,11 @@ const Simulation = () => {
 
   // AFTER RUNNING AGENT
   const releaseAgent = () => {
+    if (qValues.length === 0) {
+      console.log("train agent first!");
+      return;
+    }
+
     // UPDATING ANIMATED SIMULATION AGENT POSITION TO START POSITION
     updateSimulationAgentPosition(startPosition);
 

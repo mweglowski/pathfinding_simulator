@@ -56,6 +56,11 @@ export const SimulationStoreProvider = ({ children }) => {
   };
 
   const toggleValuesDisplay = () => {
+    if (state.qValues.length === 0) {
+      console.log('there are no qValues, since agent has not been trained!')
+      return;
+    }
+
     setState((prevState) => ({
       ...prevState,
       valuesDisplayed: !prevState.valuesDisplayed,
@@ -65,7 +70,7 @@ export const SimulationStoreProvider = ({ children }) => {
   const updateQValues = (newQValues) => {
     setState((prevState) => ({
       ...prevState,
-      qValues: newQValues,
+      qValues: [...newQValues],
     }));
   };
 

@@ -20,7 +20,7 @@ export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
   }
 
   // FOR NOW HARDCODING STEPS (ASSUMING THAT BEST PATH AFTER TRAINING IS LESS THAN 100)
-  const steps = 100;
+  const steps = 40;
   let agentY = agentPosition.y;
   let agentX = agentPosition.x;
 
@@ -45,6 +45,18 @@ export const getBestPathMoves = (startPosition, terminalPosition, qValues) => {
         : -200;
 
     let bestAction = argmax([topValue, rightValue, bottomValue, leftValue]);
+
+    // IF TERMINAL POSITION AROUND, GO HERE
+    if (isTerminalPosition(agentY - 1, agentX)) {
+      bestAction = 0;
+    } else if (isTerminalPosition(agentY, agentX + 1)) {
+      bestAction = 1;
+    } else if (isTerminalPosition(agentY + 1, agentX)) {
+      bestAction = 2;
+    } else if (isTerminalPosition(agentY, agentX - 1)) {
+      bestAction = 3;
+    }
+
     let nextMove = { y: 0, x: 0 };
 
     if (bestAction === 0) {

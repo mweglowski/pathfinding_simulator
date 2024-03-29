@@ -91,8 +91,8 @@ body {
 }
 
 .simulation-button {
-  @apply p-1 px-3 border-b-2
-  border-x-2 w-fit border-stone-600 rounded-b-md hover:text-stone-400 duration-300 hover:border-stone-500 text-stone-500;
+  @apply w-[7em] p-[3px] border-b-2
+  border-x-2 border-stone-600 rounded-b-md hover:text-stone-400 duration-300 hover:border-stone-500 text-stone-500;
 }
 
 @keyframes agentStepAnimation {

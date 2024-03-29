@@ -63,12 +63,13 @@ export class PathfindingEnvironment {
     this.agentLocation = { y: y, x: x };
 
     // ENCOURAGE EXPLORATION
-    this.reward = -1;
+    this.reward = -2;
     this.terminal = false;
 
     // CHECK IF AGENT REACHED TERMINAL STATE
     if (y === this.terminalLocation.y && x === this.terminalLocation.x) {
       this.terminal = true;
+      this.reward = 10;
       // console.log("TERMINAL LOCATION");
     }
 
