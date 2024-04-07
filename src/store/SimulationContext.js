@@ -2,16 +2,22 @@ import React, { createContext, useContext, useState } from "react";
 
 const StoreContext = createContext();
 
+const initialState = {
+  currentConfig: "none",
+  dynamitePositions: [], // [{x: 0, y: 0}, ...]
+  startPosition: { x: null, y: null }, // {x: 0, y: 0}
+  terminalPosition: { x: null, y: null }, // {x: 0, y: 0},
+  valuesDisplayed: false,
+  qValues: [],
+  simulationAgentPosition: { x: null, y: null },
+};
+
 export const SimulationStoreProvider = ({ children }) => {
-  const [state, setState] = useState({
-    currentConfig: "none",
-    dynamitePositions: [], // [{x: 0, y: 0}, ...]
-    startPosition: { x: null, y: null }, // {x: 0, y: 0}
-    terminalPosition: { x: null, y: null }, // {x: 0, y: 0},
-    valuesDisplayed: false,
-    qValues: [],
-    simulationAgentPosition: { x: null, y: null },
-  });
+  const [state, setState] = useState(initialState);
+
+  const resetSimulation = () => {
+    setState(initialState);
+  };
 
   const updateCurrentConfig = (newConfig) => {
     setState((prevState) => ({
@@ -57,7 +63,7 @@ export const SimulationStoreProvider = ({ children }) => {
 
   const toggleValuesDisplay = () => {
     if (state.qValues.length === 0) {
-      console.log('there are no qValues, since agent has not been trained!')
+      console.log("there are no qValues, since agent has not been trained!");
       return;
     }
 
@@ -82,6 +88,8 @@ export const SimulationStoreProvider = ({ children }) => {
   };
 
   const value = {
+    onResetSimulation: resetSimulation,
+
     updateCurrentConfig,
     currentConfig: state.currentConfig,
 

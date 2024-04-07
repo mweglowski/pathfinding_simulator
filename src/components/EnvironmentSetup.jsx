@@ -7,9 +7,16 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
   const [isGridShown, setIsGridShown] = useState(false);
   const [dynamitesNotificationDisplayed, setDynamitesNotificationDisplay] =
     useState(true);
-  const [startNotificationDisplayed, setStartNotificationDisplay] = useState(false);
-  const [terminalNotificationDisplayed, setTerminalNotificationDisplay] = useState(false);
-  const { updateCurrentConfig, currentConfig } = useSimulationStore();
+  const [startNotificationDisplayed, setStartNotificationDisplay] =
+    useState(false);
+  const [terminalNotificationDisplayed, setTerminalNotificationDisplay] =
+    useState(false);
+  const {
+    updateCurrentConfig,
+    currentConfig,
+    startPosition,
+    terminalPosition,
+  } = useSimulationStore();
 
   // RUNS ONCE
   useEffect(() => {
@@ -35,7 +42,12 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       clearTimeout(gridTimeout);
       clearTimeout(notificationTimeout);
     };
-  }, [updateCurrentConfig, setStartNotificationDisplay, setTerminalNotificationDisplay, setDynamitesNotificationDisplay]);
+  }, [
+    updateCurrentConfig,
+    setStartNotificationDisplay,
+    setTerminalNotificationDisplay,
+    setDynamitesNotificationDisplay,
+  ]);
 
   const nextConfigStep = (configType) => {
     if (configType === "start") {
@@ -48,6 +60,22 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
       setTerminalNotificationDisplay(true);
     } else {
       updateCurrentConfig("none");
+    }
+  };
+
+  const nextConfigButtonClickHandler = () => {
+    if (currentConfig === "dynamite") {
+      // USER IS ABLE TO LEAVE THE GRID WITHOUT DYNAMITES
+      nextConfigStep("start");
+    } else if (currentConfig === "start") {
+      // PREVENT FROM MISSING START POSITION
+      if (startPosition.x === null) return;
+      nextConfigStep("terminal");
+    } else {
+      // PREVENT FROM MISSING TERMINAL POSITION
+      if (terminalPosition.x === null) return;
+      nextConfigStep("none");
+      onEnvironmentConfigured(true);
     }
   };
 
@@ -65,7 +93,11 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
         <Notification text={"Select agent start position."} />
       ) : null}
       {terminalNotificationDisplayed ? (
-        <Notification text={"Choose agent terminal position (position which agent has to reach)."} />
+        <Notification
+          text={
+            "Choose agent terminal position (position which agent has to reach)."
+          }
+        />
       ) : null}
 
       {/* GRID */}
@@ -75,16 +107,7 @@ const EnvironmentSetup = ({ onEnvironmentConfigured }) => {
 
           <button
             className="mx-auto mt-4 text-stone-300 border-2 border-stone-400 rounded-sm px-4 p-1 text-lg hover:bg-stone-400 hover:text-stone-900 duration-300"
-            onClick={() => {
-              if (currentConfig === "dynamite") {
-                nextConfigStep("start");
-              } else if (currentConfig === "start") {
-                nextConfigStep("terminal")
-              } else {
-                nextConfigStep("none")
-                onEnvironmentConfigured(true);
-              }
-            }}
+            onClick={nextConfigButtonClickHandler}
           >
             Submit
           </button>

@@ -8,10 +8,12 @@ import { useSimulationStore } from "../store/SimulationContext";
 import Modal from "./ui/Modal";
 import TrainingAnimation from "./TrainingAnimation";
 
-const Simulation = () => {
+const Simulation = ({ onResetEnvironmentConfiguration }) => {
   const [isModalDisplayed, updateModalDisplay] = useState(false);
   const [isTrainingAnimationDisplayed, updateTrainingAnimationDisplay] =
     useState(false);
+  const [isAgentRunning, setIsAgentRunning] = useState(false);
+  const [runningAgentIntervalId, setRunningAgentIntervalId] = useState(null);
   const [episodes, setEpisodes] = useState(100);
   const [steps, setSteps] = useState(1000);
   const [stepSize, setStepSize] = useState(0.1);
@@ -28,9 +30,18 @@ const Simulation = () => {
     updateQValues,
     qValues,
     updateSimulationAgentPosition,
+    onResetSimulation,
   } = useSimulationStore();
 
   const resetSimulation = () => {
+    onResetSimulation();
+    onResetEnvironmentConfiguration();
+  };
+
+  const resetAgent = () => {
+    clearInterval(runningAgentIntervalId);
+    setRunningAgentIntervalId(null);
+    setIsAgentRunning(false);
     updateQValues([]);
 
     updateSimulationAgentPosition({ y: null, x: null });
@@ -45,7 +56,7 @@ const Simulation = () => {
   // ENVIRONMENT GIVES REWARDS, AGENT TAKES ACTIONS AND UPDATES ITS Q-VALUES
   const performTraining = () => {
     // FIRSTLY RESET SIMULATION DATA
-    resetSimulation();
+    resetAgent();
     updateTrainingAnimationDisplay(true);
     console.log("displayed");
     setTimeout(() => {
@@ -106,6 +117,11 @@ const Simulation = () => {
 
   // AFTER RUNNING AGENT
   const releaseAgent = () => {
+    // PREVENT FROM RUNNING TWO AGENTS (BUG)
+    if (isAgentRunning) return;
+
+    setIsAgentRunning(true);
+
     if (qValues.length === 0) {
       console.log("train agent first!");
       return;
@@ -141,8 +157,11 @@ const Simulation = () => {
 
         bestActionIndex += 1;
       } else {
+        setIsAgentRunning(false);
         clearInterval(intervalId);
       }
+
+      setRunningAgentIntervalId(intervalId);
     }, 1000);
   };
 
@@ -155,12 +174,15 @@ const Simulation = () => {
         <div className="flex justify-between">
           <button
             className="p-1 px-3 border-b-2 w-fit border-stone-600 rounded-t-md hover:text-stone-400 duration-300 hover:border-b-stone-500 text-stone-500"
+            onClick={resetAgent}
+          >
+            Reset agent
+          </button>
+          <button
+            className="p-1 px-3 border-b-2 w-fit border-stone-600 rounded-t-md hover:text-stone-400 duration-300 hover:border-b-stone-500 text-stone-500"
             onClick={resetSimulation}
           >
-            Reset simulation
-          </button>
-          <button className="p-1 px-3 border-b-2 w-fit border-stone-600 rounded-t-md hover:text-stone-400 duration-300 hover:border-b-stone-500 text-stone-500 ">
-            Configure environment
+            Reset Simulation
           </button>
         </div>
 
