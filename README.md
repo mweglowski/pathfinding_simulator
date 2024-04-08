@@ -53,11 +53,11 @@ After launching the simulator, you can interact with the UI by selecting differe
 ![Mobile Preview](https://i.imgur.com/Gk7N3An.png)
 ![Mobile Preview](https://i.imgur.com/HGxkta9.png)
 ![Mobile Preview](https://i.imgur.com/B9lSGRi.png)
-![Mobile Preview](hhttps://i.imgur.com/e4Z7LTu.png)
+![Mobile Preview](https://i.imgur.com/e4Z7LTu.png)
 ![Mobile Preview](https://i.imgur.com/lygRAS2.png)
 
 ## Website
-Explore the simulator online at https://bandit-problem-simulator.vercel.app/.
+Explore the simulator online at https://pathfinding-simulator.vercel.app/.
 
 ## Contributing
 Contributions are welcome! If you have suggestions or improvements, please fork the repository, make changes, and submit a pull request.
