@@ -62,9 +62,6 @@ Explore the simulator online at https://pathfinding-simulator.vercel.app/.
 ## Contributing
 Contributions are welcome! If you have suggestions or improvements, please fork the repository, make changes, and submit a pull request.
 
-## License
-This project is open-sourced under the MIT License - see the [LICENSE](LICENSE.md) file for details.
-
 ---
 
 *Inspired by the foundational reinforcement learning work of Sutton and Barto.*
