@@ -14,8 +14,8 @@ First, make sure you have [Node.js](https://nodejs.org/) installed to manage the
 To get started, clone the project and install its dependencies:
 
 ```sh
-git clone https://github.com/mweglowski/pathfinding-simulator.git
-cd pathfinding-simulator
+git clone https://github.com/mweglowski/pathfinding_simulator.git
+cd pathfinding_simulator
 npm install
 ```
 
